@@ -23,6 +23,9 @@ def get_tasks(
     if user_id is not None:
         query = query.filter(TaskDB.user_id == user_id)
 
+    # Tri par priorité croissante (1 = haute → 3 = basse)
+    query = query.order_by(TaskDB.priority.asc())
+
     return query.all()
 
 
@@ -50,7 +53,8 @@ async def create_task(
     db_task = TaskDB(
         title=task.title,
         completed=task.completed,
-        user_id=task.user_id
+        user_id=task.user_id,
+        priority=task.priority  # ← NOUVEAU
     )
 
     db.add(db_task)
@@ -96,6 +100,9 @@ async def update_task(
     if task_update.user_id is not None:
         task.user_id = task_update.user_id
 
+    if task_update.priority is not None:
+        task.priority = task_update.priority  # ← NOUVEAU
+
     db.commit()
     db.refresh(task)
 
@@ -122,6 +129,13 @@ async def delete_task(
 
     if task is None:
         raise HTTPException(status_code=404, detail="Task not found")
+
+    # ← NOUVEAU : règle métier
+    if task.completed:
+        raise HTTPException(
+            status_code=403,
+            detail="Completed tasks cannot be deleted"
+        )
 
     task_data = {
         "id": task.id,

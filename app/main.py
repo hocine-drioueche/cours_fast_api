@@ -6,6 +6,7 @@ from app.models import UserDB
 from app.routers.auth import router as auth_router
 from app.routers.tasks import router as tasks_router
 from app.routers.ws import router as ws_router
+from app.routers.users import router as users_router  # ← NOUVEAU
 
 app = FastAPI()
 
@@ -31,3 +32,4 @@ seed_data()
 app.include_router(auth_router)
 app.include_router(tasks_router)
 app.include_router(ws_router)
+app.include_router(users_router)  # ← NOUVEAU
