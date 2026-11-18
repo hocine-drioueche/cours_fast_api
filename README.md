@@ -2,6 +2,23 @@
 
 API REST de gestion de tâches construite pour apprendre **FastAPI**. Le projet couvre les briques essentielles d'un backend moderne : routes CRUD, validation Pydantic, base de données SQLAlchemy, authentification par token Bearer et notifications temps réel via WebSocket.
 
+
+## Fonctionnalités
+
+- CRUD complet sur les tâches
+- **Priorité des tâches** (1 = haute, 2 = moyenne, 3 = basse)
+- **Tri automatique par priorité** sur `GET /tasks`
+- **Date de création** (`created_at`) en lecture seule
+- **Règle métier** : une tâche terminée ne peut pas être supprimée
+- **Liste des utilisateurs** via `GET /users`
+- Validation Pydantic
+- Base de données SQLite avec SQLAlchemy
+- Authentification par token Bearer
+- Notifications temps réel via WebSocket
+- Documentation Swagger automatique (`/docs`)
+- Architecture modulaire (routers, dépendances, schémas)
+
+
 ## 1. Stack technique
 
 | Brique | Rôle |
@@ -31,6 +48,7 @@ taskflow-api/
     └── routers/
         ├── auth.py          # POST /login
         ├── tasks.py         # CRUD /tasks
+        ├── users.py         # GET /users
         └── ws.py            # WebSocket /ws/tasks
 ```
 
